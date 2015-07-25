@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "n asynchronous (sort-of) module loader for node.js. Tries to implement most of the AMD specification, but right now it falls short in some areas.",
   "main": "module-loader.litcoffee",
-  "scripts": {},
+  "scripts": {
+    "test": "mocha test.coffee --compilers coffee:coffee-script/register --compilers litcoffee:coffee-script/register"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mikeyhew/node-module-loader.git"
@@ -23,5 +25,11 @@
     "coffee-script": "^1.9.3",
     "glob": "^5.0.14",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0"
   }
 }

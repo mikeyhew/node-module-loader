@@ -15,8 +15,8 @@ Modules store the filename of the module, the dependency names, and cache the mo
     
     class Module
         constructor: (options) ->
-            {@filename, @depnames, @creator} = _.defaults options, {
-                depnames: []
+            {@filename, @depNames, @creator} = _.defaults options, {
+                depNames: []
             }
             throw new Error 'filename required' unless @filename
             throw new Error 'module requires a creator' unless @creator
@@ -31,7 +31,6 @@ ModuleLoader is the main class. A module loader is used to load modules.
                 searchPaths: []
             }
             {@paths, @searchDirs, @nodeRequire} = options
-
             _.each @searchDirs, (dir) ->
                 unless path.isAbsolute(dir)
                     throw new Error 'searchDirs passed to ModuleLoader must be absolute paths. Got "' + dir + '".'
@@ -63,7 +62,7 @@ Now that we have all the right arguments, let's make the module! Let's stop shor
             if @modules.hasOwnProperty moduleName
                 throw new Error(moduleName+' is already defined!')
             
-            theModule = new Module {filename, depnames, creator}
+            theModule = new Module {filename, depNames, creator}
             @modules[moduleName] = theModule
 
 We've made a new Module object and added it to the @modules hash, and that's all we need to do in this function.
@@ -86,7 +85,7 @@ Synchronous version of load. Returns the value of the created module.
                 if theModule._loadingDeps
                     throw new Error 'Circular dependency detected when loading module "' + moduleName + '".'
 
-                return theModule
+                return theModule.cachedValue
 
             filename = @getFilenameSync(moduleName)
             if not filename
@@ -115,7 +114,7 @@ Run the code, with the define function exposed to it. If there are multiple modu
                 define: localdefine
             }
             vm.createContext(sandbox)
-            vm.runInContext(code, sandbox, {filename: filename})
+            vm.runInContext(js, sandbox, {filename: filename})
 
 The unevaluated (uncreated) module should have been been added to @modules. Do a check to make sure.
 
@@ -132,25 +131,23 @@ Now we can get its dependencies. I'll even check for circular dependencies for y
 
 This is the moment we've all been waiting for! Create the module!
             
-            return theModule.creator.apply(null, deps)
+            return theModule.cachedValue = theModule.creator.apply(null, deps)
 
 
 
         getFilenameSync: (moduleName) ->
 
 Find the module, checking for it first in @paths, then in @searchDirs. Does not use nodeRequire - we only try that if we don't get a file name.
-
+            
             if @paths.hasOwnProperty(moduleName)
-                return @paths[moduleName]
-
-            _.each searchPaths, (dirGlob) ->
-                glob = path.join(glob, moduleName) + '@(.coffee|.js)'
-                results = globber.sync(glob)
-                if results.length > 0
-                    return results[0]
-
-            return false
-
+                @paths[moduleName]
+            else
+                _.reduce @searchDirs, ((memo, dirGlob) ->
+                    memo or
+                        glob = path.join(dirGlob, moduleName) + '.@(coffee|js)'
+                        results = globber.sync(glob)
+                        results[0] or false
+                ), false
 
 Export the ModuleLoader class, with Module added onto it.
     
