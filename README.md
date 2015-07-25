@@ -4,7 +4,7 @@ An asynchronous (sort-of) module loader for node.js. Tries to implement most of 
 - No relative module paths, except when it falls back to node's require
 - It's not actually asynchronous right now, but at least the public api allows for it to be.
 - no magic `exports`, `require`, and `module` modules (`exports` and `module.exports` may be included later to make underscore and backbone work. `require` might be supported in the future if it's actually useful.)
-- It hasn't even run or tested yet, and it won't until later today because I'm going to bed.
+- It hasn't even run or tested yet, and it won't until later today because I'm going to bed. **UPDATE** I wrote tests today and they pass. To test, install mocha (`npm install -g mocha`) and run `npm test`
 
 The main goals of ModuleLoader are best shown in this note I wrote today (well, yesterday) before I wrote this program:
 
