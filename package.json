@@ -1,0 +1,27 @@
+{
+  "name": "mikeyhew-module-loader",
+  "version": "0.0.1",
+  "description": "n asynchronous (sort-of) module loader for node.js. Tries to implement most of the AMD specification, but right now it falls short in some areas.",
+  "main": "module-loader.litcoffee",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeyhew/node-module-loader.git"
+  },
+  "keywords": [
+    "amd",
+    "module",
+    "loader"
+  ],
+  "author": "Michael Hewson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikeyhew/node-module-loader/issues"
+  },
+  "homepage": "https://github.com/mikeyhew/node-module-loader#readme",
+  "dependencies": {
+    "coffee-script": "^1.9.3",
+    "glob": "^5.0.14",
+    "underscore": "^1.8.3"
+  }
+}
