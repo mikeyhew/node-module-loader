@@ -16,7 +16,7 @@ The main goals of ModuleLoader are best shown in this note I wrote today (well, 
 >4. Can compile .coffee and .litcoffee files, and output the right file and line:column numbers on error.
 
 
-Sample Usage:
+# Sample Usage:
 
 ```javascript
 var ModuleLoader = require('mikeyhew-module-loader');
@@ -34,3 +34,6 @@ ml.load('myModule').then(function(myModule) {
   //... do stuff with myModule
 });
 ```
+
+# LICENSE
+MIT
